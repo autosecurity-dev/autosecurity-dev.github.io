@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Security Autopilot — Security scanning for your code</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      background: #f0ebe0;
+      color: #1a1a1a;
+      min-height: 100vh;
+      padding: 0 1rem;
+    }
+
+    /* ── Layout ── */
+    .page {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 3.5rem 0 4rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    /* ── Badge ── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.82rem;
+      color: #444;
+      margin-bottom: 1.8rem;
+    }
+    .badge-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4caf70;
+      flex-shrink: 0;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 6vw, 3rem);
+      font-weight: 700;
+      line-height: 1.18;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+      color: #111;
+    }
+    .hero p {
+      font-size: 1.05rem;
+      color: #555;
+      line-height: 1.6;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* ── Install box ── */
+    .install-wrap {
+      width: 100%;
+      margin-bottom: 0.75rem;
+    }
+    .install-box {
+      border: 1.5px solid #c8bfae;
+      border-radius: 10px;
+      padding: 1.1rem 1.3rem;
+      background: #faf8f4;
+    }
+    .install-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      color: #888;
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+    .install-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .install-cmd {
+      flex: 1;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 0.9rem;
+      color: #1a1a1a;
+      background: none;
+      border: none;
+      outline: none;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      cursor: default;
+      user-select: all;
+    }
+    .copy-btn {
+      flex-shrink: 0;
+      padding: 0.38rem 0.9rem;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: #333;
+      background: #ede8df;
+      border: 1px solid #c8bfae;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .copy-btn:hover { background: #e0d9ce; }
+    .copy-btn.copied { color: #4caf70; }
+
+    .install-note {
+      font-size: 0.78rem;
+      color: #888;
+      text-align: center;
+      margin-bottom: 2.8rem;
+    }
+
+    /* ── Feature cards ── */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      width: 100%;
+      margin-bottom: 3rem;
+    }
+    .card {
+      background: #faf8f4;
+      border: 1.5px solid #ddd8ce;
+      border-radius: 10px;
+      padding: 1.1rem 1rem;
+    }
+    .card-num {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #aaa;
+      margin-bottom: 0.55rem;
+    }
+    .card h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: #111;
+    }
+    .card p {
+      font-size: 0.82rem;
+      color: #666;
+      line-height: 1.5;
+    }
+
+    /* ── What it catches ── */
+    .catches-section {
+      width: 100%;
+      background: #e8e2d6;
+      border-radius: 12px;
+      padding: 2rem 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .catches-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #888;
+      text-align: center;
+      margin-bottom: 1.3rem;
+    }
+    .catches-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+    .catch-item {
+      background: #f0ebe0;
+      border: 1.5px solid #ddd8ce;
+      border-radius: 10px;
+      padding: 0.9rem 1rem;
+      display: flex;
+      gap: 0.65rem;
+      align-items: flex-start;
+    }
+    .catch-icon {
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      background: #4caf70;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1px;
+    }
+    .catch-icon svg {
+      width: 10px;
+      height: 10px;
+      fill: #fff;
+    }
+    .catch-item h4 {
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+      color: #111;
+    }
+    .catch-item p {
+      font-size: 0.78rem;
+      color: #666;
+      line-height: 1.4;
+    }
+
+    /* ── Example callout ── */
+    .example-callout {
+      width: 100%;
+      background: #3d4a35;
+      border-radius: 10px;
+      padding: 1.2rem 1.4rem;
+      margin-bottom: 2.5rem;
+    }
+    .example-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.6rem;
+    }
+    .example-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #e05252;
+      flex-shrink: 0;
+    }
+    .example-header span {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #d4e8c4;
+    }
+    .example-callout p {
+      font-size: 0.82rem;
+      color: #a8c490;
+      line-height: 1.55;
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+    }
+    .footer-note {
+      font-size: 0.78rem;
+      color: #888;
+      margin-bottom: 1.2rem;
+    }
+    .footer-note span { margin: 0 0.3rem; }
+    .github-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.55rem 1.3rem;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: #1a1a1a;
+      background: #faf8f4;
+      border: 1.5px solid #c8bfae;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .github-btn:hover { background: #ede8df; }
+    .github-btn svg { width: 18px; height: 18px; fill: currentColor; }
+
+    @media (max-width: 540px) {
+      .cards { grid-template-columns: 1fr; }
+      .catches-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- Badge -->
+    <div class="badge">
+      <span class="badge-dot"></span>
+      open source &middot; free forever
+    </div>
+
+    <!-- Hero -->
+    <div class="hero">
+      <h1>Security autopilot<br>for your code</h1>
+      <p>Catches supply chain attacks, exposed secrets, and vulnerabilities — automatically, in the background, while you build.</p>
+    </div>
+
+    <!-- Install box -->
+    <div class="install-wrap">
+      <div class="install-box">
+        <div class="install-label">Install &mdash; paste this in your terminal</div>
+        <div class="install-row">
+          <span class="install-cmd" id="cmd">curl -fsSL https://get.securityautopilot.dev | sh</span>
+          <button class="copy-btn" id="copyBtn" onclick="copyCmd()">Copy</button>
+        </div>
+      </div>
+    </div>
+    <p class="install-note">Works on macOS and Linux &middot; Installs Claude Code plugin + all scanners automatically</p>
+
+    <!-- Feature cards -->
+    <div class="cards">
+      <div class="card">
+        <div class="card-num">1</div>
+        <h3>Paste &amp; run</h3>
+        <p>One command installs everything. No technical knowledge needed.</p>
+      </div>
+      <div class="card">
+        <div class="card-num">2</div>
+        <h3>Works instantly</h3>
+        <p>Claude Code gets a security plugin. It starts scanning your projects automatically.</p>
+      </div>
+      <div class="card">
+        <div class="card-num">3</div>
+        <h3>Stay protected</h3>
+        <p>Runs silently in the background. Alerts you when something dangerous is found.</p>
+      </div>
+    </div>
+
+    <!-- What it catches -->
+    <div class="catches-section">
+      <div class="catches-label">What it catches</div>
+      <div class="catches-grid">
+        <div class="catch-item">
+          <div class="catch-icon">
+            <svg viewBox="0 0 10 10"><path d="M2 5h6M5 2v6" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div>
+            <h4>Hijacked packages</h4>
+            <p>Detects when a maintainer account is compromised and a bad version is pushed</p>
+          </div>
+        </div>
+        <div class="catch-item">
+          <div class="catch-icon">
+            <svg viewBox="0 0 10 10"><path d="M2 5h6M5 2v6" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div>
+            <h4>Exposed secrets</h4>
+            <p>API keys, tokens, and passwords accidentally committed to your repo</p>
+          </div>
+        </div>
+        <div class="catch-item">
+          <div class="catch-icon">
+            <svg viewBox="0 0 10 10"><path d="M2 5h6M5 2v6" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div>
+            <h4>Malicious install scripts</h4>
+            <p>postinstall hooks that run code the moment you install a package</p>
+          </div>
+        </div>
+        <div class="catch-item">
+          <div class="catch-icon">
+            <svg viewBox="0 0 10 10"><path d="M2 5h6M5 2v6" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div>
+            <h4>Known bad versions</h4>
+            <p>Blocks packages confirmed malicious by the security community</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Real example callout -->
+    <div class="example-callout">
+      <div class="example-header">
+        <span class="example-dot"></span>
+        <span>Real example: axios supply chain attack, March 31 2026</span>
+      </div>
+      <p>A North Korean threat actor hijacked the npm account of axios's lead maintainer and published two backdoored versions downloaded by ~100 million developers. Security Autopilot would have flagged it within seconds of the malicious version appearing.</p>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <p class="footer-note">
+        Free and open source
+        <span>&middot;</span> MIT license
+        <span>&middot;</span> No account needed
+        <span>&middot;</span> No data leaves your machine
+      </p>
+      <a class="github-btn" href="https://github.com/Omar-Dahleh/security-autopilot" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+        </svg>
+        View on GitHub
+      </a>
+    </footer>
+
+  </div>
+
+  <script>
+    function copyCmd() {
+      const text = document.getElementById('cmd').textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('copyBtn');
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = 'Copy';
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>
