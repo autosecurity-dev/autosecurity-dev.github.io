@@ -4,6 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Security Autopilot — Security scanning for your code</title>
+  <!-- PostHog analytics — replace YOUR_POSTHOG_KEY with your project API key -->
+  <script>
+    !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+" (stub)"},o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty createPersonProfile opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+    posthog.init('YOUR_POSTHOG_KEY', { api_host: 'https://us.i.posthog.com', person_profiles: 'identified_only' });
+  </script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -25,6 +30,23 @@
       align-items: center;
       gap: 0;
     }
+
+    /* ── GitHub stats ── */
+    .gh-stats {
+      display: none; /* shown via JS once data loads */
+      align-items: center;
+      gap: 1.2rem;
+      margin-bottom: 1.2rem;
+      font-size: 0.78rem;
+      color: #888;
+    }
+    .gh-stats.loaded { display: flex; }
+    .gh-stat {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .gh-stat svg { width: 13px; height: 13px; fill: #aaa; }
 
     /* ── Badge ── */
     .badge {
@@ -281,6 +303,18 @@
 <body>
   <div class="page">
 
+    <!-- GitHub live stats -->
+    <div class="gh-stats" id="ghStats">
+      <div class="gh-stat" id="ghStars">
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <span id="ghStarsCount">—</span> stars
+      </div>
+      <div class="gh-stat" id="ghWatchers">
+        <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+        <span id="ghWatchersCount">—</span> watching
+      </div>
+    </div>
+
     <!-- Badge -->
     <div class="badge">
       <span class="badge-dot"></span>
@@ -405,8 +439,20 @@
           btn.textContent = 'Copy';
           btn.classList.remove('copied');
         }, 2000);
+        if (window.posthog) posthog.capture('copy_install_command');
       });
     }
+
+    // Fetch live GitHub stats
+    fetch('https://api.github.com/repos/Omar-Dahleh/security-autopilot')
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (!data) return;
+        document.getElementById('ghStarsCount').textContent = data.stargazers_count.toLocaleString();
+        document.getElementById('ghWatchersCount').textContent = data.subscribers_count.toLocaleString();
+        document.getElementById('ghStats').classList.add('loaded');
+      })
+      .catch(() => {}); // silently hide if rate-limited
   </script>
 </body>
 </html>
