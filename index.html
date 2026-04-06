@@ -20,6 +20,22 @@
       padding: 0 1rem;
     }
 
+    /* ── Welcome banner ── */
+    .welcome-banner {
+      width: 100%;
+      background: #3d4a35;
+      text-align: center;
+      padding: 0.55rem 1rem;
+      font-size: 0.82rem;
+      color: #a8c490;
+      letter-spacing: 0.01em;
+      margin-bottom: 0;
+    }
+    .welcome-banner strong {
+      color: #d4e8c4;
+      font-weight: 600;
+    }
+
     /* ── Layout ── */
     .page {
       max-width: 700px;
@@ -84,6 +100,34 @@
       line-height: 1.6;
       max-width: 520px;
       margin: 0 auto;
+    }
+
+    /* ── Built for section ── */
+    .built-for {
+      display: flex;
+      gap: 0.6rem;
+      margin-bottom: 2.2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .built-for-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: #555;
+      background: #ede8df;
+      border: 1.5px solid #ddd8ce;
+      border-radius: 20px;
+      padding: 0.3rem 0.75rem;
+    }
+    .built-for-tag .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #4caf70;
+      flex-shrink: 0;
     }
 
     /* ── Install box ── */
@@ -297,10 +341,17 @@
     @media (max-width: 540px) {
       .cards { grid-template-columns: 1fr; }
       .catches-grid { grid-template-columns: 1fr; }
+      .built-for { gap: 0.4rem; }
     }
   </style>
 </head>
 <body>
+
+  <!-- Welcome banner -->
+  <div class="welcome-banner">
+    <strong>Welcome, vibe coders &amp; all devs!</strong> &mdash; Security Autopilot is free, open source, and built for everyone who ships code.
+  </div>
+
   <div class="page">
 
     <!-- GitHub live stats -->
@@ -325,6 +376,15 @@
     <div class="hero">
       <h1>Security autopilot<br>for your code</h1>
       <p>Catches supply chain attacks, exposed secrets, and vulnerabilities — automatically, in the background, while you build.</p>
+      <p style="margin-top: 0.75rem; font-size: 0.9rem; color: #888; font-style: italic;">Because <code style="font-style: normal; background: #e8e2d6; padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.85rem;">npm audit</code> wasn't enough.</p>
+    </div>
+
+    <!-- Built for tags -->
+    <div class="built-for">
+      <span class="built-for-tag"><span class="dot"></span>Vibe coders</span>
+      <span class="built-for-tag"><span class="dot"></span>Claude Code users</span>
+      <span class="built-for-tag"><span class="dot"></span>Solo devs</span>
+      <span class="built-for-tag"><span class="dot"></span>Teams</span>
     </div>
 
     <!-- Install box -->
@@ -332,7 +392,7 @@
       <div class="install-box">
         <div class="install-label">Install &mdash; paste this in your terminal</div>
         <div class="install-row">
-          <span class="install-cmd" id="cmd">curl -fsSL https://get.securityautopilot.dev | sh</span>
+          <span class="install-cmd" id="cmd">curl -fsSL https://raw.githubusercontent.com/autosecurity-dev/security-autopilot/main/install.sh | sh</span>
           <button class="copy-btn" id="copyBtn" onclick="copyCmd()">Copy</button>
         </div>
       </div>
@@ -344,7 +404,7 @@
       <div class="card">
         <div class="card-num">1</div>
         <h3>Paste &amp; run</h3>
-        <p>One command installs everything. No technical knowledge needed.</p>
+        <p>One command installs everything. No config, no dashboard, no account needed.</p>
       </div>
       <div class="card">
         <div class="card-num">2</div>
@@ -407,7 +467,7 @@
         <span class="example-dot"></span>
         <span>Real example: axios supply chain attack, March 31 2026</span>
       </div>
-      <p>A North Korean threat actor hijacked the npm account of axios's lead maintainer and published two backdoored versions downloaded by ~100 million developers. Security Autopilot would have flagged it within seconds of the malicious version appearing.</p>
+      <p>A North Korean threat actor hijacked the npm account of axios's lead maintainer and published two backdoored versions downloaded by ~100 million developers. Security Autopilot flags it within seconds of the malicious version appearing — before you ever run npm install.</p>
     </div>
 
     <!-- Footer -->
@@ -418,7 +478,8 @@
         <span>&middot;</span> No account needed
         <span>&middot;</span> No data leaves your machine
       </p>
-      <a class="github-btn" href="https://github.com/Omar-Dahleh/security-autopilot" target="_blank" rel="noopener">
+      <p style="font-size: 0.78rem; color: #888; margin-bottom: 0.9rem;">⭐ Star the repo to get notified when new attack signatures are added</p>
+      <a class="github-btn" href="https://github.com/autosecurity-dev/security-autopilot" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
         </svg>
@@ -444,7 +505,7 @@
     }
 
     // Fetch live GitHub stats
-    fetch('https://api.github.com/repos/Omar-Dahleh/security-autopilot')
+    fetch('https://api.github.com/repos/autosecurity-dev/security-autopilot')
       .then(r => r.ok ? r.json() : null)
       .then(data => {
         if (!data) return;
