@@ -390,14 +390,18 @@
     <!-- Install box -->
     <div class="install-wrap">
       <div class="install-box">
-        <div class="install-label">Install &mdash; paste this in your terminal</div>
+        <div class="install-label">Recommended &mdash; verified install via PyPI</div>
         <div class="install-row">
-          <span class="install-cmd" id="cmd">curl -fsSL https://raw.githubusercontent.com/autosecurity-dev/security-autopilot/main/install.sh | sh</span>
+          <span class="install-cmd" id="cmd">uvx security-autopilot</span>
           <button class="copy-btn" id="copyBtn" onclick="copyCmd()">Copy</button>
         </div>
       </div>
     </div>
-    <p class="install-note">Works on macOS and Linux &middot; Installs Claude Code plugin + all scanners automatically</p>
+    <p class="install-note">
+      Cryptographically signed build &middot; macOS and Linux &middot; Installs Claude Code plugin + all scanners
+      <br style="margin-bottom:0.3rem">
+      <span style="font-size:0.72rem;color:#aaa">Prefer curl? <code style="background:#e8e2d6;padding:0.1rem 0.3rem;border-radius:3px;font-size:0.7rem">curl -fsSL https://raw.githubusercontent.com/autosecurity-dev/security-autopilot/main/install.sh | sh</code></span>
+    </p>
 
     <!-- Feature cards -->
     <div class="cards">
