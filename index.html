@@ -403,18 +403,18 @@
     <div class="cards">
       <div class="card">
         <div class="card-num">1</div>
-        <h3>Paste &amp; run</h3>
-        <p>One command installs everything. No config, no dashboard, no account needed.</p>
+        <h3>Auto-patches itself</h3>
+        <p>Finds <code style="background:#e8e2d6;padding:0.1rem 0.3rem;border-radius:3px;font-size:0.78rem">axios@1.14.1</code>? It downgrades it automatically — no manual intervention.</p>
       </div>
       <div class="card">
         <div class="card-num">2</div>
-        <h3>Works instantly</h3>
-        <p>Claude Code gets a security plugin. It starts scanning your projects automatically.</p>
+        <h3>Live threat feeds</h3>
+        <p>Pulls from OSV.dev and the npm advisory API in real-time, not a stale hardcoded list.</p>
       </div>
       <div class="card">
         <div class="card-num">3</div>
-        <h3>Stay protected</h3>
-        <p>Runs silently in the background. Alerts you when something dangerous is found.</p>
+        <h3>Watches your project</h3>
+        <p>Background daemon re-scans automatically whenever you add or update a package.</p>
       </div>
     </div>
 
@@ -458,7 +458,60 @@
             <p>Blocks packages confirmed malicious by the security community</p>
           </div>
         </div>
+        <div class="catch-item">
+          <div class="catch-icon">
+            <svg viewBox="0 0 10 10"><path d="M2 5h6M5 2v6" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div>
+            <h4>Auto-fix for malicious packages</h4>
+            <p>Automatically downgrades to the last known-safe version — same major, no breaking changes</p>
+          </div>
+        </div>
+        <div class="catch-item">
+          <div class="catch-icon">
+            <svg viewBox="0 0 10 10"><path d="M2 5h6M5 2v6" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div>
+            <h4>Secret rotation guidance</h4>
+            <p>Tells you exactly how to revoke and rotate each leaked credential — Stripe, GitHub, AWS, and more</p>
+          </div>
+        </div>
+        <div class="catch-item">
+          <div class="catch-icon">
+            <svg viewBox="0 0 10 10"><path d="M2 5h6M5 2v6" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div>
+            <h4>CVEs in your dependencies</h4>
+            <p>Trivy scans your full dependency tree and flags known vulnerabilities with severity ratings</p>
+          </div>
+        </div>
+        <div class="catch-item">
+          <div class="catch-icon">
+            <svg viewBox="0 0 10 10"><path d="M2 5h6M5 2v6" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div>
+            <h4>Code vulnerabilities (SAST)</h4>
+            <p>Semgrep finds SQL injection, XSS, and insecure patterns in your source code</p>
+          </div>
+        </div>
       </div>
+    </div>
+
+    <!-- Auto-patch flow callout -->
+    <div class="example-callout" style="margin-bottom: 1rem; background: #1e2a1a;">
+      <div class="example-header">
+        <span class="example-dot" style="background: #4caf70;"></span>
+        <span>What happens when it finds something</span>
+      </div>
+      <p style="font-family: 'SFMono-Regular', Consolas, monospace; font-size: 0.8rem; line-height: 1.9; color: #a8c490;">
+        🔴 <strong style="color:#e8a0a0">[CRITICAL]</strong> axios@1.14.1 — Sapphire Sleet supply chain attack<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;Scanner: supply_chain &nbsp;|&nbsp; Remediation: downgrade to 1.14.0<br>
+        ✅ <strong style="color:#a8c490">Auto-patched</strong> axios 1.14.1 → 1.14.0<br>
+        <br>
+        🟠 <strong style="color:#e8c97a">[HIGH]</strong> Stripe secret key found in src/api.js:3<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;Rotate at: dashboard.stripe.com/apikeys<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;Add to .gitignore and use environment variables
+      </p>
     </div>
 
     <!-- Real example callout -->
